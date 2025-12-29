@@ -7,9 +7,12 @@ import Register from "../pages/auth/Register";
 import Dashboard from "../pages/Dashboard";
 import Users from "../pages/Users";
 import Roles from "../pages/Roles";
+import { useAuthStore } from "../stores/auth";
 
 function ProtectedRoute({ children }) {
-  const isAuthenticated = true; // TODO: lấy từ auth state
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+
+  //const isAuthenticated = false; // TODO: lấy từ auth state
   return isAuthenticated ? children : <Navigate to="/login" replace />;
 }
 
