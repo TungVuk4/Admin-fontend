@@ -25,7 +25,8 @@ export default function AppLayout() {
   }, []);
 
   return (
-    <div className="flex min-h-dvh bg-slate-50">
+    // Thay đổi bg-slate-50 sang màu xám nhạt hơn hoặc trắng để đồng bộ mẫu
+    <div className="flex min-h-screen bg-gray-50/50 text-slate-900">
       {/* Desktop Sidebar */}
       {!isMobile && (
         <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
@@ -39,7 +40,9 @@ export default function AppLayout() {
         />
       )}
 
-      <div className="flex flex-col flex-1 min-h-0">
+      {/* Main Content Area */}
+      <div className="flex flex-col flex-1 min-w-0 h-screen overflow-hidden">
+        {/* Topbar: Đã thêm các icon tìm kiếm, thông báo, ngôn ngữ và avatar */}
         <Topbar
           isMobile={isMobile}
           collapsed={collapsed}
@@ -48,8 +51,12 @@ export default function AppLayout() {
           }
         />
 
-        <main className="flex-1 p-4 overflow-y-auto">
-          <Outlet />
+        {/* Nội dung chính: Thêm hiệu ứng cuộn mượt và padding phù hợp */}
+        <main className="flex-1 overflow-y-auto overflow-x-hidden p-4 md:p-6 lg:p-8">
+          <div className="max-w-7xl mx-auto">
+            {/* max-w-7xl giúp nội dung không quá rộng trên màn hình cực lớn */}
+            <Outlet />
+          </div>
         </main>
       </div>
     </div>

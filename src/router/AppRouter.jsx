@@ -1,13 +1,15 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import AuthLayout from "../layout/AuthLayout";
 import AppLayout from "../layout/AppLayout";
-
+import ForgotPassword from "../pages/auth/ForgotPassword";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import Dashboard from "../pages/Dashboard";
 import Users from "../pages/Users";
 import Roles from "../pages/Roles";
 import { useAuthStore } from "../stores/auth";
+import ResetPassword from "../pages/auth/ResetPassword";
+import Product from "../pages/Product";
 
 function ProtectedRoute({ children }) {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -23,6 +25,8 @@ export default function AppRouter() {
       <Route element={<AuthLayout />}>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
       </Route>
 
       {/* APP */}
@@ -36,6 +40,7 @@ export default function AppRouter() {
         <Route path="/" element={<Dashboard />} />
         <Route path="/users" element={<Users />} />
         <Route path="/roles" element={<Roles />} />
+        <Route path="/product" element={<Product />} />
       </Route>
 
       {/* FALLBACK */}
