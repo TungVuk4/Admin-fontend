@@ -34,7 +34,7 @@ export default function UserPopover() {
     email: "vutung@gmail.com",
     role: "ADMINISTRATOR",
     avatar:
-      "https://scontent.fsgn5-8.fna.fbcdn.net/v/t39.30808-1/456085326_1629435794569402_8130330138360519485_n.jpg?stp=cp6_dst-jpg_s160x160_tt6&_nc_cat=109&ccb=1-7&_nc_sid=1d2534&_nc_ohc=3pz9vS1MMiEQ7kNvwEVXsqw&_nc_oc=Admc2a_xonGOIv7GoiEK8mEKwIwV49GsPfQ-puL25FSpTUupiMedLyTyIbaVAyqAm0A&_nc_zt=24&_nc_ht=scontent.fsgn5-8.fna&_nc_gid=FDtzbzk7Y3oyMCm-oezTQQ&oh=00_AflfMhA1khbqHL1kcJgsSaYmFykrxKgFtuGhmRaJ_4O1zg&oe=6957DD9C",
+      "https://scontent.fsgn8-3.fna.fbcdn.net/v/t39.30808-6/456085326_1629435794569402_8130330138360519485_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=109&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=NtcHBb8Rd24Q7kNvwHKliRW&_nc_oc=AdlFSrXYYHSnqEKZkYmAhwLS9P7yswqojYIOV1hQMzEOOgCcfnMSVYV_FpDFb9LG9RoglrDhb2au34ovYNKhBZUH&_nc_zt=23&_nc_ht=scontent.fsgn8-3.fna&_nc_gid=WhKUzQCDv3dbelvDkVedtg&oh=00_Afptdh_SAzLauDwQWCpJQBLQfSvT4EFpqbtEG97Siz7BDA&oe=695FECDA",
   };
 
   return (
