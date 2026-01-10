@@ -6,8 +6,13 @@ import { InputText } from "primereact/inputtext";
 import { InputSwitch } from "primereact/inputswitch";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "../stores/auth";
 
 export default function UserPopover() {
+  // Lấy dữ liệu user và hàm logout từ Auth Store đã kết nối API
+  const user = useAuthStore((state) => state.user);
+  const logout = useAuthStore((state) => state.logout);
+
   const { t } = useTranslation();
   const op = useRef(null);
   const navigate = useNavigate();
@@ -18,6 +23,7 @@ export default function UserPopover() {
     localStorage.getItem("theme") === "dark"
   );
 
+  // Xử lý chuyển đổi giao diện Sáng/Tối
   useEffect(() => {
     const html = document.documentElement;
     if (isDarkMode) {
@@ -29,24 +35,28 @@ export default function UserPopover() {
     }
   }, [isDarkMode]);
 
-  const userData = {
-    name: "JimVu",
-    email: "vutung@gmail.com",
-    role: "ADMINISTRATOR",
-    avatar:
-      "https://scontent.fsgn8-3.fna.fbcdn.net/v/t39.30808-6/456085326_1629435794569402_8130330138360519485_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=109&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=NtcHBb8Rd24Q7kNvwHKliRW&_nc_oc=AdlFSrXYYHSnqEKZkYmAhwLS9P7yswqojYIOV1hQMzEOOgCcfnMSVYV_FpDFb9LG9RoglrDhb2au34ovYNKhBZUH&_nc_zt=23&_nc_ht=scontent.fsgn8-3.fna&_nc_gid=WhKUzQCDv3dbelvDkVedtg&oh=00_Afptdh_SAzLauDwQWCpJQBLQfSvT4EFpqbtEG97Siz7BDA&oe=695FECDA",
+  const handleLogout = () => {
+    logout();
+    op.current.hide();
+    navigate("/login");
   };
+
+  // Logic hiển thị Avatar: Ưu tiên ảnh từ DB, nếu không có dùng ảnh placeholder
+  const defaultAvatar =
+    "https://scontent-sin6-2.xx.fbcdn.net/v/t39.30808-1/456085326_1629435794569402_8130330138360519485_n.jpg?stp=cp6_dst-jpg_s200x200_tt6&_nc_cat=109&ccb=1-7&_nc_sid=1d2534&_nc_ohc=HwFVWdP9l8AQ7kNvwF3JaQe&_nc_oc=Adm9idEanr5QPPtcwuR4GnjgCSoJo9E3CN3tSDHUEwZyn6kkmh4cm4mcRDiBNhU2urI&_nc_zt=24&_nc_ht=scontent-sin6-2.xx&_nc_gid=xOrX9XiWwZvsYrVhuahU4g&oh=00_AfqSm2L0ufs73HAXet3w6LhZOxVIksNRtXa_Qigh1RrD1g&oe=6963BB1C";
+  const displayAvatar = user?.avatar || defaultAvatar;
 
   return (
     <div className="flex items-center">
+      {/* NÚT AVATAR TRÊN TOPBAR */}
       <div
-        className="relative flex items-center p-1 rounded-full hover:bg-gray-100 cursor-pointer transition-all active:scale-95"
+        className="relative flex items-center p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-all active:scale-95"
         onClick={(e) => op.current.toggle(e)}
       >
         <img
-          src={userData.avatar}
+          src={displayAvatar}
           alt="avatar"
-          className="w-9 h-9 rounded-full border-2 border-white shadow-sm object-cover"
+          className="w-9 h-9 rounded-full border-2 border-white dark:border-gray-700 shadow-sm object-cover"
         />
         <span
           className={`absolute bottom-1 right-1 w-2.5 h-2.5 border-2 border-white rounded-full ${
@@ -55,20 +65,22 @@ export default function UserPopover() {
         ></span>
       </div>
 
+      {/* MENU NHỎ KHI CLICK VÀO AVATAR */}
       <OverlayPanel
         ref={op}
         className="p-0 shadow-2xl border-none rounded-[20px] overflow-hidden mt-2 dark:bg-[#1C252E]"
       >
         <div className="w-[240px]">
           <div className="px-6 py-5 flex flex-col bg-gray-50/50 dark:bg-[#212B36]">
-            <span className="font-bold text-[#212B36] dark:text-white text-[16px]">
-              {userData.name}
+            <span className="font-bold text-[#212B36] dark:text-white text-[16px] truncate">
+              {user?.name || "Người dùng"}
             </span>
-            <span className="text-gray-500 dark:text-gray-400 text-[13px]">
-              {userData.email}
+            <span className="text-gray-500 dark:text-gray-400 text-[13px] truncate">
+              {user?.email || "Chưa có email"}
             </span>
           </div>
           <div className="border-t border-dashed border-gray-200 dark:border-gray-700"></div>
+
           <div className="flex flex-col p-2 gap-1">
             <Button
               label={t("home")}
@@ -102,16 +114,14 @@ export default function UserPopover() {
           <div className="p-2">
             <Button
               label={t("logout")}
-              className="w-full p-button-text text-red-500 font-bold text-sm py-3 border-none hover:bg-red-50 rounded-xl"
-              onClick={() => {
-                navigate("/login");
-                op.current.hide();
-              }}
+              className="w-full p-button-text text-red-500 font-bold text-sm py-3 border-none hover:bg-red-50 dark:hover:bg-red-900/10 rounded-xl"
+              onClick={handleLogout}
             />
           </div>
         </div>
       </OverlayPanel>
 
+      {/* DIALOG THÔNG TIN HỒ SƠ CHI TIẾT */}
       <Dialog
         visible={visibleProfile}
         onHide={() => setVisibleProfile(false)}
@@ -127,60 +137,54 @@ export default function UserPopover() {
               className="text-[#637381] dark:text-gray-400 font-bold cursor-pointer hover:text-[#212B36] dark:hover:text-white transition-colors"
               onClick={() => setVisibleProfile(false)}
             >
-              Hủy bỏ
+              Đóng
             </span>
-            <Button
-              label="Lưu lại"
-              className="bg-[#212B36] dark:bg-white text-white dark:text-[#212B36] border-none font-bold px-8 py-3 rounded-xl shadow-md hover:opacity-90 transition-all"
-              onClick={() => setVisibleProfile(false)}
-            />
           </div>
         }
       >
         <div className="flex flex-col items-center gap-6 py-4">
           <img
-            src={userData.avatar}
+            src={displayAvatar}
             className="w-24 h-24 rounded-full border-4 border-white dark:border-[#212B36] shadow-xl object-cover"
-            alt="user"
+            alt="user-profile"
           />
 
           <div className="w-full flex flex-col gap-6 px-4">
-            {/* TÊN SẢN PHẨM - Chỉnh màu xám đậm hơn (#637381) */}
             <div className="flex flex-col gap-2">
               <label className="font-extrabold text-[11px] text-[#637381] dark:text-[#919EAB] uppercase tracking-widest ml-1">
-                TÊN SẢN PHẨM
+                HỌ TÊN
               </label>
               <InputText
-                value={userData.name}
-                className="p-3.5 border-none bg-gray-50 dark:bg-[#212B36] text-[#212B36] dark:text-white font-bold rounded-2xl w-full transition-all"
+                value={user?.name || ""}
+                disabled
+                className="p-3.5 border-none bg-gray-50 dark:bg-[#212B36] text-[#212B36] dark:text-white font-bold rounded-2xl w-full"
               />
             </div>
 
-            {/* EMAIL - Chỉnh text đậm hơn */}
             <div className="flex flex-col gap-2">
               <label className="font-extrabold text-[11px] text-[#637381] dark:text-[#919EAB] uppercase tracking-widest ml-1">
                 EMAIL
               </label>
               <InputText
-                value={userData.email}
+                value={user?.email || user?.Email || ""}
                 disabled
                 className="p-3.5 border-none bg-gray-50 dark:bg-[#212B36] rounded-2xl w-full text-[#454F5B] dark:text-gray-400 font-bold italic"
               />
             </div>
 
-            {/* VAI TRÒ - Tăng độ tương phản */}
             <div className="flex flex-col gap-2">
               <label className="font-extrabold text-[11px] text-[#637381] dark:text-[#919EAB] uppercase tracking-widest ml-1">
                 VAI TRÒ
               </label>
               <div className="p-3.5 bg-blue-50/50 dark:bg-[#00B8D914] text-[#006C9C] dark:text-[#00B8D9] font-extrabold rounded-2xl text-center text-sm uppercase border border-blue-100 dark:border-[#00B8D93D] tracking-widest">
-                {userData.role}
+                {user?.role || "GUEST"}
               </div>
             </div>
           </div>
         </div>
       </Dialog>
 
+      {/* DIALOG CÀI ĐẶT DARK MODE */}
       <Dialog
         visible={visibleSettings}
         onHide={() => setVisibleSettings(false)}
@@ -212,58 +216,36 @@ export default function UserPopover() {
       </Dialog>
 
       <style jsx="true">{`
-        /* KHÔI PHỤC STYLE CHUẨN */
         .custom-profile-dialog .p-dialog-header {
           padding: 1.5rem 1.5rem 0.5rem 1.5rem !important;
           border: none !important;
-          background: #ffffff !important; /* Nền trắng đặc cho chế độ sáng */
+          background: #ffffff !important;
         }
-
         .dark .custom-profile-dialog .p-dialog-header {
-          background: #161c24 !important; /* Nền tối đặc cho chế độ tối */
+          background: #161c24 !important;
         }
-
         .custom-profile-dialog .p-dialog-header-title {
           font-size: 1.25rem !important;
           font-weight: 900 !important;
           color: #212b36 !important;
         }
-
         .dark .custom-profile-dialog .p-dialog-header-title {
           color: white !important;
         }
-
         .custom-profile-dialog .p-dialog-content {
           padding: 0 1.5rem 1rem 1.5rem !important;
-          background: #ffffff !important; /* Nền trắng đặc cho nội dung */
+          background: #ffffff !important;
         }
-
         .dark .custom-profile-dialog .p-dialog-content {
-          background: #161c24 !important; /* Nền tối đặc cho nội dung */
+          background: #161c24 !important;
         }
-
-        /* FIX LỖI TRONG SUỐT CHO TOÀN BỘ DIALOG */
         .dark .custom-profile-dialog {
           background-color: #161c24 !important;
           border: 1px solid #212b36 !important;
-          box-shadow: 0 24px 48px -8px rgba(0, 0, 0, 0.4) !important;
         }
-
         .p-dialog-mask {
-          background-color: rgba(
-            33,
-            43,
-            54,
-            0.6
-          ) !important; /* Tăng độ mờ của lớp phủ phía sau */
-          backdrop-filter: blur(
-            8px
-          ); /* Tăng độ nhòe để làm nổi bật trang lên */
-        }
-
-        .p-overlaypanel:after,
-        .p-overlaypanel:before {
-          display: none !important;
+          background-color: rgba(33, 43, 54, 0.6) !important;
+          backdrop-filter: blur(8px);
         }
         .p-overlaypanel-content {
           padding: 0 !important;

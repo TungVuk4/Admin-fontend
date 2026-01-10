@@ -5,12 +5,28 @@ export const useAuthStore = create(
   persist(
     (set) => ({
       isAuthenticated: false,
-      setLogin: () => set({ isAuthenticated: true }),
-      logout: () => set({ isAuthenticated: false }),
+      token: null,
+      user: null, // Lưu trữ id, name, role...
+
+      // Cập nhật hàm setLogin để nhận dữ liệu từ API
+      setLogin: (token, userData) =>
+        set({
+          isAuthenticated: true,
+          token: token,
+          user: userData,
+        }),
+
+      // Hàm đăng xuất: Xóa sạch trạng thái
+      logout: () =>
+        set({
+          isAuthenticated: false,
+          token: null,
+          user: null,
+        }),
     }),
     {
-      name: "auth-storage", // Tên khóa (key) sẽ hiển thị trong LocalStorage
-      storage: createJSONStorage(() => localStorage), // (Tùy chọn) Mặc định là localStorage
+      name: "auth-storage",
+      storage: createJSONStorage(() => localStorage),
     }
   )
 );

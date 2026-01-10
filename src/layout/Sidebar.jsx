@@ -44,7 +44,10 @@ export default function Sidebar({ collapsed }) {
       `}
     >
       {/* Logo Section */}
-      <div className="h-20 flex items-center px-6 mb-2">
+      <div
+        onClick={() => navigate("/")} // Thêm sự kiện click để về trang chủ
+        className="h-20 flex items-center px-6 mb-2"
+      >
         <div className="bg-cyan-100 dark:bg-cyan-900/30 p-2.5 rounded-xl mr-3 flex items-center justify-center shadow-sm text-cyan-600 dark:text-cyan-400">
           <i className="pi pi-prime text-xl"></i>
         </div>

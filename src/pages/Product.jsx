@@ -36,9 +36,14 @@ export default function Product() {
       items: [
         { label: t("tanktop"), value: "tanktop" },
         { label: t("t_shirt"), value: "t_shirt" },
+        { label: t("sport_shirt"), value: "sport_top" }, // Đã khớp với i18n
         { label: t("polo"), value: "polo" },
         { label: t("shirt"), value: "shirt" },
+        { label: t("long_sleeve"), value: "long_sleeve" },
+        { label: t("sweater"), value: "sweater" },
+        { label: t("hoodie"), value: "hoodie" },
         { label: t("jacket"), value: "jacket" },
+        { label: t("graphic_tshirt"), value: "graphic_t_shirt" }, // Đã khớp key i18n
       ],
     },
     {
@@ -46,8 +51,12 @@ export default function Product() {
       items: [
         { label: t("short"), value: "short" },
         { label: t("jogger"), value: "jogger" },
+        { label: t("sport_pants"), value: "sport_pants" },
+        { label: t("long_pants"), value: "long_pants" },
+        { label: t("pants"), value: "pants" },
         { label: t("jeans"), value: "jeans" },
         { label: t("khaki"), value: "khaki" },
+        { label: t("swimwear"), value: "swimwear" },
       ],
     },
     {
@@ -55,6 +64,9 @@ export default function Product() {
       items: [
         { label: t("brief"), value: "brief" },
         { label: t("trunk"), value: "trunk" },
+        { label: t("boxer_brief"), value: "boxer_brief" },
+        { label: t("long_leg"), value: "long_leg" },
+        { label: t("homewear"), value: "home_short" }, // Đã khớp key i18n
       ],
     },
     {

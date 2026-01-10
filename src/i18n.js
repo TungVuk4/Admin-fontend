@@ -15,7 +15,7 @@ const resources = {
       products_title: "Sản phẩm",
       login: "Đăng nhập",
 
-      // --- Profile Popover keys (MỚI) ---
+      // --- Profile Popover keys ---
       profile: "Hồ sơ",
       settings: "Cài đặt",
       logout: "Đăng xuất",
@@ -30,6 +30,34 @@ const resources = {
       save: "Lưu lại",
       delete: "Xóa sản phẩm",
       cancel: "Hủy bỏ",
+
+      // --- User Page Keys (MỚI CẬP NHẬT) ---
+      user_management_sub: "Quản lý tài khoản và phân quyền hệ thống",
+      user_table_name: "Người dùng",
+      user_table_role: "Vai trò",
+      user_table_date: "Ngày tạo",
+      user_table_status: "Trạng thái",
+      user_table_action: "Hành động",
+      search_user_placeholder: "Tìm kiếm theo tên hoặc email...",
+
+      // Dialog Cập nhật
+      update_user_header: "Chi tiết tài khoản",
+      full_name_label: "HỌ VÀ TÊN",
+      role_label: "VAI TRÒ",
+      admin_role: "Quản trị viên (Admin)",
+      customer_role: "Khách hàng (Customer)",
+      update_btn: "Cập nhật",
+      close_btn: "Đóng",
+
+      // Xác nhận xóa
+      confirm_delete_header: "Cảnh báo bảo mật",
+      confirm_delete_msg:
+        "Hành động này sẽ xóa vĩnh viễn tài khoản. Bạn có chắc chắn không?",
+      bulk_delete_header: "Xác nhận xóa hàng loạt",
+      bulk_delete_msg:
+        "Bạn có chắc chắn muốn xóa {{count}} người dùng đã chọn?",
+      confirm_yes: "Xác nhận xóa",
+      confirm_no: "Quay lại",
 
       // --- Filter Sidebar keys ---
       filters: "Bộ lọc",
@@ -86,15 +114,23 @@ const resources = {
   },
   en: {
     translation: {
+      // --- Topbar & Sidebar keys ---
       search: "Search...",
       search_placeholder: "Search product...",
       home: "Home",
-      profile: "Profile",
-      settings: "Settings",
-      logout: "Logout",
+      dashboard: "Dashboard",
+      users: "Users",
+      roles: "Roles",
       product: "Product",
       products_title: "Products",
       login: "Sign in",
+
+      // --- Profile Popover keys ---
+      profile: "Profile",
+      settings: "Settings",
+      logout: "Logout",
+
+      // --- Product Page Actions & Modal ---
       new_product: "New Product",
       add_product_title: "Add New Product",
       edit_product_title: "Update Product",
@@ -104,24 +140,81 @@ const resources = {
       save: "Save",
       delete: "Delete",
       cancel: "Cancel",
+
+      // --- User Page Keys (NEW) ---
+      user_management_sub: "System account and permission management",
+      user_table_name: "User",
+      user_table_role: "Role",
+      user_table_date: "Created At",
+      user_table_status: "Status",
+      user_table_action: "Action",
+      search_user_placeholder: "Search by name or email...",
+
+      // Update Dialog
+      update_user_header: "Account Details",
+      full_name_label: "FULL NAME",
+      role_label: "ROLE",
+      admin_role: "Administrator (Admin)",
+      customer_role: "Customer",
+      update_btn: "Update",
+      close_btn: "Close",
+
+      // Confirm Delete
+      confirm_delete_header: "Security Warning",
+      confirm_delete_msg:
+        "This action will permanently delete the account. Are you sure?",
+      bulk_delete_header: "Confirm Bulk Delete",
+      bulk_delete_msg:
+        "Are you sure you want to delete {{count}} selected users?",
+      confirm_yes: "Confirm Delete",
+      confirm_no: "Go Back",
+
+      // --- Filter Sidebar keys ---
       filters: "Filters",
       gender: "Gender",
       men: "Men",
-      category: "Category",
       price: "Price",
       clear: "Clear All",
       apply: "Apply",
+      category: "Category",
 
-      // Groups & Categories
+      // Nhóm Áo Nam
       group_tops: "Men's Tops",
       tanktop: "Tanktop",
       t_shirt: "T-Shirt",
+      sport_shirt: "Sport Shirt",
+      polo: "Polo",
+      shirt: "Shirt",
+      long_sleeve: "Long Sleeve",
+      sweater: "Sweater",
+      hoodie: "Hoodie",
+      jacket: "Jacket",
+      graphic_tshirt: "Graphic T-Shirt",
+
+      // Nhóm Quần Nam
       group_bottoms: "Men's Bottoms",
+      short: "Shorts",
+      jogger: "Joggers",
+      sport_pants: "Sport Pants",
+      long_pants: "Long Pants",
+      pants: "Pants",
+      jeans: "Jeans",
+      khaki: "Khaki",
+      swimwear: "Swimwear",
+
+      // Nhóm Quần Lót
       group_underwear: "Men's Underwear",
+      brief: "Briefs",
+      trunk: "Trunks",
+      boxer_brief: "Boxer Briefs",
+      long_leg: "Long Leg",
+      homewear: "Home Shorts",
+
+      // Phụ kiện
       group_accessories: "Accessories",
       all_accessories: "All Accessories",
 
-      // Sort
+      // --- Sort keys ---
       sort_by: "Sort By",
       sort_featured: "Featured",
       sort_newest: "Newest",
@@ -133,7 +226,7 @@ const resources = {
 
 i18n.use(initReactI18next).init({
   resources,
-  lng: "vi", // Ngôn ngữ mặc định
+  lng: "vi",
   fallbackLng: "en",
   interpolation: { escapeValue: false },
 });

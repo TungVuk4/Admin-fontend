@@ -1,14 +1,14 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import AuthLayout from "../layout/AuthLayout";
 import AppLayout from "../layout/AppLayout";
-import ForgotPassword from "../pages/auth/ForgotPassword";
 import Login from "../pages/auth/Login";
-import Register from "../pages/auth/Register";
 import Dashboard from "../pages/Dashboard";
 import Users from "../pages/Users";
 import Roles from "../pages/Roles";
 import { useAuthStore } from "../stores/auth";
-import ResetPassword from "../pages/auth/ResetPassword";
+// import ResetPassword from "../pages/auth/ResetPassword";
+// import ForgotPassword from "../pages/auth/ForgotPassword";
+// import Register from "../pages/auth/Register";
 import Product from "../pages/Product";
 
 function ProtectedRoute({ children }) {
@@ -24,9 +24,9 @@ export default function AppRouter() {
       {/* AUTH */}
       <Route element={<AuthLayout />}>
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        {/* <Route path="/register" element={<Register />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} /> */}
       </Route>
 
       {/* APP */}

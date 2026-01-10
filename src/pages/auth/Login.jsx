@@ -1,10 +1,12 @@
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
-import { Password } from "primereact/password"; // Dùng Password của Prime để có icon con mắt
+import { Password } from "primereact/password";
 import { useState, useRef } from "react";
 import { useAuthStore } from "../../stores/auth";
 import { useNavigate } from "react-router-dom";
 import { Toast } from "primereact/toast";
+// Import hàm gọi API từ ApiServices
+import { loginApi } from "../../services/ApiServices";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -14,16 +16,57 @@ export default function Login() {
   const toast = useRef(null);
 
   const handleClick = async () => {
-    //gọi api từ backend
-    // Cập nhật tài khoản theo yêu cầu của bạn
-    if (email === "vutung150100@gmail.com" && pass === "ADtungvu456") {
-      setLogin();
-      navigate("/");
-    } else {
+    // 1. Kiểm tra dữ liệu đầu vào cơ bản
+    if (!email || !pass) {
+      toast.current.show({
+        severity: "warn",
+        summary: "Thông báo",
+        detail: "Vui lòng nhập đầy đủ Email và Mật khẩu",
+      });
+      return;
+    }
+
+    try {
+      // 2. Gọi API đăng nhập từ Backend
+      // Truyền đúng các trường Email và Password như Backend yêu cầu
+      const response = await loginApi(email, pass);
+      if (response.success) {
+        console.log("Dữ liệu User từ Backend:", response.user);
+        // PHẢI TRUYỀN response.user để lấy đúng dữ liệu từ Backend gửi về
+        setLogin(response.token, response.user);
+        navigate("/");
+      }
+      if (response.success) {
+        // 3. Kiểm tra phân quyền: Chỉ cho phép Admin vào trang này
+        if (response.user.role === "Admin") {
+          // Lưu token và thông tin user vào Auth Store
+          setLogin(response.token, response.user);
+
+          toast.current.show({
+            severity: "success",
+            summary: "Thành công",
+            detail: `Chào mừng ${response.user.name} quay trở lại!`,
+          });
+
+          // Điều hướng về trang chủ sau 1 giây để người dùng kịp nhìn thông báo thành công
+          setTimeout(() => {
+            navigate("/");
+          }, 1000);
+        } else {
+          // Nếu đăng nhập bằng tài khoản Customer
+          toast.current.show({
+            severity: "error",
+            summary: "Truy cập bị từ chối",
+            detail: "Tài khoản của bạn không có quyền truy cập trang quản trị",
+          });
+        }
+      }
+    } catch (error) {
+      // 4. Hiển thị lỗi từ Backend trả về (Ví dụ: "Email hoặc mật khẩu không đúng")
       toast.current.show({
         severity: "error",
-        summary: "Error",
-        detail: "Sai email hoặc pass",
+        summary: "Lỗi đăng nhập",
+        detail: error || "Không thể kết nối tới máy chủ",
       });
     }
   };
@@ -33,7 +76,10 @@ export default function Login() {
       <Toast ref={toast} />
 
       {/* Logo góc trên trái */}
-      <div className="absolute top-8 left-8">
+      <div
+        onClick={() => navigate("/")}
+        className="absolute top-8 left-8 cursor-pointer"
+      >
         <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center shadow-lg shadow-blue-200">
           <i className="pi pi-prime text-white text-xl"></i>
         </div>
@@ -42,19 +88,9 @@ export default function Login() {
       <div className="w-full max-w-[480px] bg-white rounded-[24px] p-8 md:p-12 shadow-xl shadow-gray-200/50 border border-gray-100/50">
         <div className="text-center mb-10">
           <h2 className="text-2xl font-bold text-slate-800 mb-2">Sign in</h2>
-          <p className="text-slate-500 text-sm">
-            Don’t have an account?{" "}
-            <span
-              className="text-blue-600 font-semibold cursor-pointer hover:underline"
-              onClick={() => navigate("/register")}
-            >
-              Get started
-            </span>
-          </p>
         </div>
 
         <div className="flex flex-col gap-6">
-          {/* Email Input */}
           <div className="flex flex-col gap-2">
             <label className="text-xs font-semibold text-slate-500 ml-1">
               Email address
@@ -67,18 +103,11 @@ export default function Login() {
             />
           </div>
 
-          {/* Password Input */}
           <div className="flex flex-col gap-2">
             <div className="flex justify-between items-center px-1">
-              <label className="text-xs font-semibold text-slate-500">
+              <label className="text-xs font-semibold text-slate-500 ml-1">
                 Password
               </label>
-              <span
-                className="text-xs font-semibold text-blue-600 cursor-pointer hover:underline"
-                onClick={() => navigate("/forgot-password")}
-              >
-                Forgot password?
-              </span>
             </div>
             <Password
               value={pass}
@@ -94,9 +123,9 @@ export default function Login() {
           <Button
             label="Sign in"
             onClick={handleClick}
-            // Nền đen (bg-black), chữ trắng (text-white)
             className="w-full py-4 bg-black border-none rounded-xl font-bold text-white hover:bg-gray-800 transition-all shadow-lg shadow-gray-200"
           />
+
           <div className="relative my-4">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t border-gray-200"></span>
@@ -108,7 +137,6 @@ export default function Login() {
             </div>
           </div>
 
-          {/* Social Buttons */}
           <div className="flex justify-center gap-6 text-xl">
             <i className="pi pi-google text-red-500 cursor-pointer hover:scale-110 transition-transform"></i>
             <i className="pi pi-github text-slate-800 cursor-pointer hover:scale-110 transition-transform"></i>
